@@ -33,7 +33,7 @@ Node Web Dev,Test,Monitor,Deploy
    - pm2_gui_port 为pm2_gui 端口
    - webContextPath 为web contextPath
 
-2. grunt --gruntfile Gruntfile-replace.js
+2. grunt --gruntfile Gruntfile-replace.js  注意修改完后如果deploy/shell/目录下的sh文件换行符为CRLF的话，请转化为linux下的LF
 
 3. 注意deploy/process/test/pm2-start.json,deploy/process/prod/pm2-start.json 中的
 `NODE_ENV`变量和config/config.js文件中的`process.env.NODE_ENV` 变量一致
