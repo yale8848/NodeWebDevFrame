@@ -1,0 +1,18 @@
+{
+    "name": "NodeWebDevFrame",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "pm2 start ./deploy/process/local/pm2-start.json --watch",
+        "stop": "pm2 stop all"
+    },
+    "devDependencies": {
+        "grunt": "^1.0.1",
+        "grunt-async-ssh-exec": "^0.1.3",
+        "grunt-contrib-clean": "^1.0.0",
+        "grunt-contrib-compress": "^1.4.1",
+        "grunt-ssh-deploy": "^0.4.1",
+        "load-grunt-tasks": "^3.5.2",
+        "time-grunt": "^1.4.0"
+    }
+}
