@@ -24,11 +24,11 @@ Node Web Dev,Test,Monitor,Deploy
 
 ### 修改项目名称等配置
 
-需要修改项目名称，端口等信息
+默认项目名称为DXHQuestServer，需要修改项目名称，端口等信息
 
 1. 修改Gruntfile-replace.js文件中的信息 
    
-   - appName 为项目名称
+   - appName 为项目名称，此名称影响到部署后的目录名称，pm2名称
    - appPort 为web端口
    - pm2_gui_port 为pm2_gui 端口
    - webContextPath 为web contextPath
