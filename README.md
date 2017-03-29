@@ -26,13 +26,11 @@ Node Web Dev,Test,Monitor,Deploy
 
 需要修改所有的 DXHQuestServer 名称
 
-1. 修改 deploy/shell/test/,deploy/shell/prod/ 目录里shell中的 `APP` , `APP_NAME` 变量
+1. 修改Gruntfile-replace.js 中replacements.to名称
 
-2. 修改 deploy/process/test/pm2-start.json,deploy/process/prod/pm2-start.json 目录里 `PORT`, `cwd` ,`error_file`,`out_file` 变量
+2. grunt --gruntfile Gruntfile-replace.js
 
-3. 修改Gruntfile.js中 `APP`变量
-
-4. 注意deploy/process/test/pm2-start.json,deploy/process/prod/pm2-start.json 中的
+3. 注意deploy/process/test/pm2-start.json,deploy/process/prod/pm2-start.json 中的
 `NODE_ENV`变量和config/config.js文件中的`process.env.NODE_ENV` 变量一致
 
 
