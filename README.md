@@ -1,2 +1,81 @@
 # NodeWebDevFrame
 Node Web Dev,Test,Monitor,Deploy
+
+## 简介
+
+本工程是node web 工程开发框架，其包括node app开发，测试，监控，以及部署方案；
+
+`config`目录是web app 调用的配置文件，`deploy`目录是部署配置
+
+#### 开发
+
+  默认是用Express，但此工程不包含web框架
+
+#### 测试
+
+  用npm启动脚本，PM2进行进程管理
+#### 部署
+
+  通过grunt ssh 进行服务器初始化和部署
+
+
+### 新建项目修改项目名称
+
+需要修改所有的 DXHQuestServer 名称
+
+1. 修改 deploy/shell/test/,deploy/shell/prod/ 目录里shell中的 `APP` , `APP_NAME` 变量
+
+2. 修改 deploy/process/test/pm2-start.json,deploy/process/prod/pm2-start.json 目录里 `PORT`, `cwd` ,`error_file`,`out_file` 变量
+
+3. 修改Gruntfile.js中 `APP`变量
+
+4. 注意deploy/process/test/pm2-start.json,deploy/process/prod/pm2-start.json 中的
+`NODE_ENV`变量和config/config.js文件中的`process.env.NODE_ENV` 变量一致
+
+
+### 初次安装
+
+默认服务器为linux服务器，所有的账户为root账户，服务器部署为测试服务器和正式服务器，测试名称为test,正式服务器名为prod
+
+1. npm i
+
+2. 修改deploy/grunt/secret_install.json 服务器信息
+
+3. 测试服务安装node依赖，添加node环境变量，添加开机自启； `grunt install_test --gruntfile Gruntfile-install.js `
+ 修改deploy/grunt/secret_install.json中的intstall_test 等信息
+
+4. 正式服务器安装node依赖，添加node环境变量，添加开机自启；`grunt install_prod --gruntfile Gruntfile-install.js `
+   正式服务器有多个的话，先在 deploy/grunt/secret_install.json中修改intstall_prod 的hosts数组添加host，然后在Gruntfile-install.js 中 environments  task中添加 install_prod0，install_prod1 等等，同时修改install_prod0，install_prod1 中的hosts[0],hosts[1]
+
+### 本地开发测试
+1. npm install
+2. npm install pm2 -g
+3. npm install grunt-cli -g
+
+npm start ==> pm2 start deploy/process/local/pm2-start.json --watch
+
+需要修改deploy/process/local/pm2-start.json 相关信息，默认开启watch
+
+### 测试服务器部署
+
+1. 修改deploy/grunt/secret.json test 字段相关信息,修改方法和初次安装中一样；
+2. grunt test --gruntfile Gruntfile-deploy.js
+
+### 正式服务器部署
+
+1. 修改deploy/grunt/secret.json prod 字段相关信息,修改方法和初次安装中一样，注意添加host同时要修改Gruntfile.js中的environments task，添加prod0，prod1 等等
+2. grunt prod --gruntfile Gruntfile-deploy.js
+
+
+### 部署说明
+
+此工程用PM2进程管理，日志切割用pm2-logrotate，服务器监控用pm2-gui
+
+1. 安装install.sh 会放入/home/server/install/
+2. 初次安装会安装node-7.6.0,下载目录/home/server/soft,安装路劲/usr/local/node-xxxxx
+3. app工程会放入/home/server/xxxx
+4. pm2日志会放入 /home/server/logs/xxx/app
+5. pm2-gui日志会放入 /home/server/logs/xxx/pm2-gui
+
+
+
