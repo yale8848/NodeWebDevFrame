@@ -11,7 +11,10 @@ if (env == 'local') {
 }
 
 config.addRouter = function(app, path, router) {
-    app.use(this.contextPath + path, router);
+    app.use(this.getContextPath() + path, router);
+}
+config.getContextPath = function() {
+    return this.contextPath || '';
 }
 
 module.exports = config;
