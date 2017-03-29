@@ -7,9 +7,6 @@ var bodyParser = require('body-parser');
 
 var config = require('./config/config');
 
-var index = require('./routes/index');
-var test = require('./routes/test');
-var quest = require('./routes/quest');
 
 var app = express();
 
@@ -32,13 +29,8 @@ app.use(cookieParser());
 
 app.use(config.contextPath, express.static(path.join(__dirname, 'public')));
 
-//app.set('base', '/DXHQuestServer');
-app.use(config.contextPath + '/', index);
-
-app.use(config.contextPath + '/test', test);
-//app.use('/users', users);
-app.use(config.contextPath + '/quest', quest);
-//app.use('/quest', quest);
+config.addRouter(app, '/', index);
+config.addRouter(app, '/test', test);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
