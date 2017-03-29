@@ -69,7 +69,7 @@ npm start ==> pm2 start deploy/process/local/pm2-start.json --watch
 
 ### 部署说明
 
-此工程用PM2进程管理，日志切割用pm2-logrotate，服务器监控用pm2-gui
+此工程用[PM2](https://github.com/Unitech/pm2)进程管理，日志切割用 [pm2-logrotate](https://github.com/pm2-hive/pm2-logrotate) ，服务器监控用 [pm2-gui](https://github.com/Tjatse/pm2-gui)
 
 1. 安装install.sh 会放入/home/server/install/
 2. 初次安装会安装node-7.6.0,下载目录/home/server/soft,安装路劲/usr/local/node-xxxxx
