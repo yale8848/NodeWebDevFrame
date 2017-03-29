@@ -1,5 +1,5 @@
 module.exports = {
-    contextPath: "/xxxx",
+    contextPath: "/DXHQuestServer",
     db: {}
 
 };

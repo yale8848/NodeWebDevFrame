@@ -1,7 +1,7 @@
 #!/bin/sh
 
 MODE="test"
-APP="dxh-quest"
+APP="DXHQuestServer"
 APP_NAME="DXHQuestServer"
 SERVER_PATH="/home/server"
 

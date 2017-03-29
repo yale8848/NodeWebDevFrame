@@ -1,6 +1,6 @@
 {
     "apps": [{
-        "name": "dxh-quest",
+        "name": "DXHQuestServer",
         "script": "./bin/www",
         "cwd": "/home/server/DXHQuestServer/",
         "env": { "NODE_ENV": "prod", "PORT": "1738" },
