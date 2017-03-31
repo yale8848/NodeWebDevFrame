@@ -73,6 +73,18 @@ npm start ==> pm2 start deploy/process/local/pm2-start.json --watch
 2. grunt prod --gruntfile Gruntfile-deploy.js
 
 
+### 部署流程
+
+1. 服务器环境安装
+   - grunt:async_ssh_exec 创建目录
+   - grunt:ssh_deploy 上传文件
+   - grunt:async_ssh_exec 执行批处理命令
+2. 部署
+   - grunt:compress 压缩工程文件未zip文件
+   - grunt:ssh_deploy 上传文件
+   - grunt:async_ssh_exec 解压并启动
+   - grunt:simple_rest 验证接口，看服务器是否正常启动
+
 ### 部署说明
 
 此工程用[PM2](https://github.com/Unitech/pm2)进程管理，日志切割用 [pm2-logrotate](https://github.com/pm2-hive/pm2-logrotate) ，服务器监控用 [pm2-gui](https://github.com/Tjatse/pm2-gui)
