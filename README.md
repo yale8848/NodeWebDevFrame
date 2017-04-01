@@ -12,7 +12,7 @@ Node Web Dev,Test,Monitor,Deploy
 
 #### 开发
 
-  默认是用Express，但此工程不包含web框架
+  默认是用Express web
 
 #### 测试
 

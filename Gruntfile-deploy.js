@@ -111,6 +111,18 @@ module.exports = function(grunt) {
                     { exe: "bash " + remtoePath + "/deploy/shell/" + PROD + "/start.sh", silent: false, interrupt: false }
                 ]
             },
+        },
+        simple_rest: {
+            verify: {
+                async: true,
+                protocol: 'http',
+                hosts: ['11.22.33.11'],
+                interrupt: false,
+                count: 5,
+                timeout: 3000,
+                timeGap: 1000,
+                url: ['/test', '/test2', 'http://11.111.11.11/test']
+            }
         }
     });
 
@@ -118,14 +130,16 @@ module.exports = function(grunt) {
         'compress:main',
         'ssh_deploy:test',
         'async_ssh_exec:test',
-        'clean'
+        'clean',
+        'simple_rest'
     ]);
     grunt.registerTask('prod', [
         'compress:main',
         'ssh_deploy:prod0',
         'ssh_deploy:prod1',
         'async_ssh_exec:prod',
-        'clean'
+        'clean',
+        'simple_rest'
     ]);
     grunt.registerTask('default', 'test');
 
