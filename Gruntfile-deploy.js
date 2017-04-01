@@ -124,6 +124,7 @@ module.exports = function(grunt) {
                 url: ['/test', '/test2', 'http://11.111.11.11/test']
             }
         }
+
     });
 
     grunt.registerTask('test', [
