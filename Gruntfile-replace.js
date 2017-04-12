@@ -4,12 +4,13 @@ module.exports = function(grunt) {
     require('time-grunt')(grunt);
 
     grunt.initConfig({
+
         pkg: grunt.file.readJSON('package.json'),
 
-        appName: "DXHQuestServer",
-        appPort: 1738,
-        pm2_gui_port: 360923,
-        webContextPath: "DXHQuestServer",
+        appName: "dxhnews",
+        appPort: 3256,
+        pm2_gui_port: 13256,
+        webContextPath: "dxhnews",
 
         replace: {
 
@@ -22,7 +23,7 @@ module.exports = function(grunt) {
                 }]
             },
             webContextPath: {
-                src: ['config/**/*.*'],
+                src: ['config/**/*.*', 'deploy/mock/**/*.*'],
                 overwrite: true,
                 replacements: [{
                     from: 'DXHQuestServer',
@@ -30,7 +31,7 @@ module.exports = function(grunt) {
                 }]
             },
             port: {
-                src: ['deploy/process/**/*.*'],
+                src: ['deploy/process/**/*.*', 'bin/www'],
                 overwrite: true,
                 replacements: [{
                     from: '1738',
@@ -38,6 +39,10 @@ module.exports = function(grunt) {
                 }, {
                     from: '360923',
                     to: '<%= pm2_gui_port %>'
+                }, {
+                    from: '3000',
+                    to: '<%= appPort %>'
+
                 }]
             }
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>导学号新闻编辑后台</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{contextPath}}/favicon.ico">
+
+    <link href="{{contextPath}}/layui-v1.0.9_rls/layui/css/layui.css" type="text/css" rel="stylesheet" />
+
+    <link href="{{contextPath}}/css/dxhnews.css" rel="stylesheet">
+</head>
+
+<body>
+    {% block content %}{% endblock %}
+</body>
+<script type="text/javascript">
+    var contextPath = "{{contextPath}}";
+</script>
+<script src="{{contextPath}}/layui-v1.0.9_rls/layui/layui.js" type="text/javascript"></script>
+<script src="//cdn.bootcss.com/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="{{contextPath}}/js/dxhnews.js"></script>
+{% block script %}{% endblock %}
+
+</html>

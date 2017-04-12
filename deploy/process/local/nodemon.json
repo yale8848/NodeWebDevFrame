@@ -1,0 +1,22 @@
+{
+    "restartable": "rs",
+    "verbose": true,
+    "env": {
+        "NODE_ENV": "local",
+        "PORT": "4000"
+    },
+    "watch": [
+        "public/",
+        "routes/",
+        "views/",
+        "dao/",
+        "service/",
+        "app.js"
+    ],
+    "ignore": [
+        ".git",
+        ".idea",
+        "node_modules"
+    ],
+    "ext": "js html"
+}
