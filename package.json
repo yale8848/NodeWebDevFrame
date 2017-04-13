@@ -3,7 +3,10 @@
     "version": "0.0.3",
     "private": true,
     "scripts": {
-
+        "start": "pm2 start pm2-start.json --watch",
+        "start1": "nodemon --config ./deploy/process/local/nodemon.json ./bin/www",
+        "stop": "pm2 stop all",
+        "start22": "pm2 start ./deploy/process/local/pm2-start.json --watch"
     },
     "dependencies": {
         "ali-oss": "^4.8.0",

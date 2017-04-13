@@ -3,7 +3,7 @@
         "name": "DXHQuestServer",
         "script": "./bin/www",
         "cwd": "/home/server/DXHQuestServer/",
-        "env": { "NODE_ENV": "prod", "PORT": "1738" },
+        "env": { "NODE_ENV": "production", "PORT": "1738" },
         "watch": "false",
         "max_memory_restart": "1024M",
         "instances": 2,

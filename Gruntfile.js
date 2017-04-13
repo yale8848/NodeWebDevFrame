@@ -55,7 +55,7 @@ module.exports = function(grunt) {
                         //  '**/*.html',
                         //  '!node_modules/**/*.html',
                         //   '!static/**/*.html',
-                        'page/**/*.html',
+                        'pages/**/*.html',
                         'img/{,*/}*.*',
                         '*.ico'
                     ]
@@ -255,15 +255,15 @@ module.exports = function(grunt) {
             },
             mock: {
                 files: [mockTestPath],
-                tasks: ['nunjucksMutil:stastic']
+                tasks: ['nunjucksMutil:static']
             },
             dev: {
                 files: [mockBuildPath],
                 tasks: ['nunjucksMutil:dev']
             },
             nunjucks: {
-                files: ['<%= config.src %>/views/**/*.html', '<%= config.src %>/page/**/*.html'],
-                tasks: ['nunjucksMutil:stastic']
+                files: ['<%= config.src %>/views/**/*.html', '<%= config.src %>/pages/**/*.html'],
+                tasks: ['nunjucksMutil:static']
             },
             views: {
                 files: ['<%= config.src %>/views/**/*.html'],
@@ -325,9 +325,9 @@ module.exports = function(grunt) {
         },
         replace: {
             path: {
-                src: ['<%= config.dist %>/page/*.html'],
+                src: ['<%= config.dist %>/pages/*.html'],
                 overwrite: true,
-                //dest: '<%= config.dist %>/page/*.html',
+                //dest: '<%= config.dist %>/pages/*.html',
                 replacements: [{
                     pattern: '<img src="',
                     replacement: '<img src="\<\\%\= CCCC \%\>'
@@ -348,9 +348,9 @@ module.exports = function(grunt) {
                         ext: ".html"
                     }, {
                         expand: true,
-                        cwd: "./src/page/",
+                        cwd: "./src/pages/",
                         src: "**/*.html",
-                        dest: "<%=config.dist%>/page/",
+                        dest: "<%=config.dist%>/pages/",
                         ext: ".html"
                     }]
                 }
@@ -362,9 +362,9 @@ module.exports = function(grunt) {
                 render: {
                     files: [{
                         expand: true,
-                        cwd: "./src/page/",
+                        cwd: "./src/pages/",
                         src: "**/*.html",
-                        dest: "./public/page/",
+                        dest: "./public/pages/",
                         ext: ".html"
                     }]
                 },

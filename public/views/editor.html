@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <link href="/layui-v1.0.9_rls/layui/css/layui.css" type="text/css" rel="stylesheet" />
+
+    <link href="/css/dxhnews.css" rel="stylesheet">
+</head>
+
+<body>
+     <ul class="layui-nav" lay-filter="">
+    <li class="layui-nav-item "><a href="/news/list">新闻列表</a></li>
+    <li class="layui-nav-item "><a href="/editor">添加新闻</a></li>
+</ul>
+
+<div class='editor-content'>
+    <form class="layui-form" action="/news/add" method="POST">
+        <div class="layui-form-item">
+            <label class="layui-form-label">新闻标题</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" value="" required lay-verify="required" placeholder="新闻标题" autocomplete="off" class="layui-input editor-title-input" />
+            </div>
+            <div class="layui-form-mid layui-word-aux">40字以内</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">上传图片</label>
+            <div class="layui-input-inline">
+                <input type="file" name="file" class="layui-upload-file">
+            </div>
+            <div class="layui-form-mid layui-word-aux">图片大小：(150*80)</div>
+
+            <img class='title-img' src="" />
+
+            <input type='hidden' id='title-img-url' name='titleImgUrl' />
+        </div>
+        <input type='hidden' name='dxhNewsId' value="" />
+        <textarea rows="300" cols="300" name="content"></textarea>
+        <button class="layui-btn btn-submit" lay-submit lay-filter="submit-editor">提交</button>
+    </form>
+</div>
+
+
+</body>
+<script type="text/javascript">
+    var contextPath = "";
+</script>
+<script src="/layui-v1.0.9_rls/layui/layui.js" type="text/javascript"></script>
+<script src="//cdn.bootcss.com/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="/js/dxhnews.js"></script>
+
+<script type="text/javascript" src="/ckeditor_4.6.2/ckeditor.js"></script>
+<script type="text/javascript">
+    CKEDITOR.replace('content', {
+        height: '400px'
+    });
+    CKEDITOR.instances["content"].setData('');
+
+    var layer;
+    layui.use('layer', function() {
+        layer = layui.layer;
+
+
+    });
+
+    layui.use('form', function() {
+        var form = layui.form();
+
+
+        form.on('submit(submit-editor)', function(data) {
+            var tm = $(".title-img").attr('src');
+            if (tm.length == 0) {
+                layer.msg('请上传图片');
+                return false;
+            }
+            var ed = CKEDITOR.instances["content"].getData();
+            if (ed.length == 0) {
+                layer.msg('请填入新闻内容');
+                return false;
+            }
+
+
+            $("#title-img-url").val($(".title-img").attr('src'));
+
+            $('.btn-submit').addClass('layui-btn-disabled');
+            return true;
+        });
+    });
+
+
+    layui.use('upload', function() {
+        layui.upload({
+            url: '/upload/title' //上传接口
+                ,
+            success: function(res) { //上传成功后的回调
+                if (res.success) {
+                    $('.title-img').addClass('news-title-img').attr("src", res.url);
+                }
+            }
+        });
+    });
+
+    if ($(".title-img").attr('src')) {
+        $(".title-img").addClass('news-title-img');
+    }
+
+    $(".editor-title-input").change(function() {
+        var v = $(this).val();
+        v.length > 40 ? $(this).val(v.substr(0, 40)) : v;
+    });
+</script>
+
+
+</html>

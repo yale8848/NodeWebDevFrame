@@ -85,4 +85,10 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
+if (process.env.NODE_ENV != "production") {
+    app.disable('view cache');
+} else {
+    app.enable('view cache');
+}
+
 module.exports = app;

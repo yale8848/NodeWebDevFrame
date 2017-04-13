@@ -6,7 +6,7 @@ if (env == 'local') {
     config = require('./configLocal');
 } else if (env == 'test') {
     config = require('./configTest');
-} else if (env == 'prod') {
+} else if (env == 'production') {
     config = require('./configProd');
 }
 
