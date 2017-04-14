@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require('express-session')
+var cookieSession = require('cookie-session');
 
 var nunjucks = require('nunjucks');
 var helmet = require('helmet');
@@ -34,13 +34,11 @@ app.use(config.getContextPath(), express.static(path.join(__dirname, 'public')))
 
 
 app.set('trust proxy', 1) // trust first proxy express-session
-app.use(session({
-    secret: 'mysecretdxh',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 5000 }
-}));
-
+app.use(cookieSession({
+    name: 'session',
+    keys: ['dxhnewskey'],
+    maxAge: 90 * 24 * 60 * 60 * 1000 // 24 hours 
+}))
 
 app.all('*', function(req, res, next) {
     //res.header("Access-Control-Allow-Origin", "*");
