@@ -350,7 +350,7 @@ module.exports = function(grunt) {
                         expand: true,
                         cwd: "./src/pages/",
                         src: "**/*.html",
-                        dest: "<%=config.dist%>/pages/",
+                        dest: "./public/pages/",
                         ext: ".html"
                     }]
                 }
