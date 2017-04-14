@@ -62,12 +62,15 @@ Node Web Dev,Test,Monitor,Deploy
 如果使用数据库，先用执行 ` deploy/db/seq-auto.bat ` 生成models
 
 npm start
+
 pm2 monit
 
 需要修改pm2-start.json 相关信息，默认开启watch
 
 1.静态页面开发，`grunt static ` 自动监听模板以及所有静态文件，实时刷新页面，模板的数据放在deploy/mock/test.json
+
 2.后台开发，`grunt dev ` 自动监听模板以及所有静态文件，实时刷新页面，模板的contextPath数据放在deploy/mock/build.json 目的是为静态html页面路径提供静态路径
+
 3.最终build, `gurnt build` 生成最终用于生成环境用的代码
 
 ### 测试服务器部署
