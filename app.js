@@ -4,10 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var cookieSession = require('cookie-session');
+var session = require('express-session')
 
 var nunjucks = require('nunjucks');
-
+var helmet = require('helmet');
 
 var config = require('./config/config');
 var routers = require('./routes/routers');
@@ -22,6 +22,8 @@ nunjucks.configure(path.join(__dirname, 'views'), { // 设置模板文件的目�
 });
 app.set('view engine', 'html');
 
+app.use(helmet());
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,13 +32,15 @@ app.use(cookieParser());
 //add static context path
 app.use(config.getContextPath(), express.static(path.join(__dirname, 'public')));
 
-app.set('trust proxy', 1) // trust first proxy cookie-session
 
-app.use(cookieSession({
-    name: 'session',
-    keys: ['key1', 'key2'],
-    maxAge: 100 * 24 * 60 * 60 * 1000
-}))
+app.set('trust proxy', 1) // trust first proxy express-session
+app.use(session({
+    secret: 'mysecretdxh',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 5000 }
+}));
+
 
 app.all('*', function(req, res, next) {
     //res.header("Access-Control-Allow-Origin", "*");

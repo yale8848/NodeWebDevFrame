@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                 }]
             },
             webContextPath: {
-                src: ['config/**/*.*', 'deploy/mock/**/*.*'],
+                src: ['config/**/*.*', 'deploy/mock/**/*.*', 'pm2-start.json'],
                 overwrite: true,
                 replacements: [{
                     from: 'DXHQuestServer',
@@ -31,13 +31,13 @@ module.exports = function(grunt) {
                 }]
             },
             port: {
-                src: ['deploy/process/**/*.*', 'bin/www'],
+                src: ['deploy/process/**/*.*', 'bin/www', 'pm2-start.json'],
                 overwrite: true,
                 replacements: [{
                     from: '1738',
                     to: '<%= appPort %>'
                 }, {
-                    from: '360923',
+                    from: '36092',
                     to: '<%= pm2_gui_port %>'
                 }, {
                     from: '3000',
