@@ -62,6 +62,7 @@ Node Web Dev,Test,Monitor,Deploy
 如果使用数据库，先用执行 ` deploy/db/seq-auto.bat ` 生成models
 
 npm start
+pm2 monit
 
 需要修改pm2-start.json 相关信息，默认开启watch
 
