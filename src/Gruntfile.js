@@ -38,9 +38,7 @@ module.exports = function(grunt) {
         build: path.resolve(__dirname, "..") + "/build"
     };
 
-    const mockTestPath = "./mock/mock.json";
-    const mockBuildPath = "./mock/mock.json";
-
+    const mockPath = "./mock/mock.json";
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -53,9 +51,6 @@ module.exports = function(grunt) {
                     cwd: '<%= config.src %>/',
                     dest: '<%= config.dist %>/',
                     src: [
-                        //  '**/*.html',
-                        //  '!node_modules/**/*.html',
-                        //   '!static/**/*.html',
                         'pages/**/*.html',
                         'img/{,*/}*.*',
                         '*.ico'
@@ -92,9 +87,15 @@ module.exports = function(grunt) {
                     cwd: '.',
                     dest: '<%= config.build %>/',
                     src: [
+
                         '**/*.*',
                         '!node_modules/**/*',
-                        '!src/**/*'
+                        '!src/**/*',
+                        '!mock/**/*',
+                        '!Gruntfile.js',
+                        'bin/**/*'
+
+
                     ]
                 }]
             }
@@ -128,7 +129,7 @@ module.exports = function(grunt) {
         uglify: {
             target: {
                 files: {
-                    '<%= config.dist %>/js/dxhnews.js': ['<%= config.dist %>/js/dxhnews.js']
+                    '<%= config.dist %>/js/main.js': ['<%= config.dist %>/js/main.js']
                 }
             }
         },
@@ -185,7 +186,8 @@ module.exports = function(grunt) {
 
         useminPrepare: {
             html: [
-                '<%= config.src %>/**/*.html',
+                '<%= config.src %>/pages/**/*.html',
+                './views/**/*.html'
             ],
             options: {
                 dest: '<%= config.dist %>',
@@ -197,8 +199,7 @@ module.exports = function(grunt) {
             options: {
                 assetsDirs: [
                     '<%= config.dist %>',
-                    '<%= config.dist %>/img',
-
+                    '<%= config.dist %>/img'
                 ],
                 patterns: {
                     css: [
@@ -212,6 +213,7 @@ module.exports = function(grunt) {
             },
             html: [
                 '<%= config.dist %>/**/*.html',
+                './views/**/*.html'
             ],
 
             js: '<%= config.dist %>/js/*.js',
@@ -268,17 +270,13 @@ module.exports = function(grunt) {
 
                 tasks: ['browserify'],
             },
-            mock: {
-                files: [mockTestPath],
-                tasks: ['nunjucksMutil:static']
-            },
             dev: {
-                files: [mockBuildPath],
+                files: [mockPath],
                 tasks: ['nunjucksMutil:dev']
             },
             nunjucks: {
                 files: ['./views/**/*.html', '<%= config.src %>/pages/**/*.html'],
-                tasks: ['nunjucksMutil:static']
+                tasks: ['nunjucksMutil:dev']
             },
             // views: {
             //     files: ['./views/**/*.html'],
@@ -313,17 +311,11 @@ module.exports = function(grunt) {
                 },
                 src: ['<%= config.dist %>/**/*', '<%= config.tmp %>/**/*']
             },
-            views: {
-                options: {
-                    force: true
-                },
-                src: ['./views/**/*']
-            },
             build: {
                 options: {
                     force: true
                 },
-                src: ['<%= config.dist %>/**/*']
+                src: ['<%= config.build %>/**/*']
             }
         },
         // 通过connect任务，创建一个静态服务器
@@ -356,9 +348,9 @@ module.exports = function(grunt) {
             }
         },
         nunjucksMutil: {
-            static: {
+            dev: {
                 options: {
-                    data: grunt.file.readJSON(mockTestPath)
+                    data: grunt.file.readJSON(mockPath)
                 },
                 render: {
                     files: [{
@@ -375,68 +367,42 @@ module.exports = function(grunt) {
                         ext: ".html"
                     }]
                 }
-            },
-            dev: {
-                options: {
-                    data: grunt.file.readJSON(mockBuildPath)
-                },
-                render: {
-                    files: [{
-                        expand: true,
-                        cwd: "./src/pages/",
-                        src: "**/*.html",
-                        dest: "./public/pages/",
-                        ext: ".html"
-                    }]
-                },
             }
         }
 
     });
 
-    grunt.registerTask('static', [
-        'clean:dist',
-        'copy:dist',
-        'copy:static',
-        'less',
-        'browserify',
-        'nunjucksMutil:static',
-        'connect',
-        'watch'
-    ]);
-    grunt.registerTask('build', [
-
-        'clean:dist',
-        'copy:dist',
-        'copy:static',
-        'less',
-        'browserify',
-
-
-        'clean:dist',
-        'copy:dist',
-        'copy:static',
-        'copy:views',
-        'less',
-        'browserify',
-        'useminPrepare',
-        'uglify',
-        'cssmin'
-    ]);
     grunt.registerTask('dev', [
         'clean:dist',
         'copy:dist',
         'copy:static',
         'less',
         'browserify',
+        'nunjucksMutil:dev',
+        'connect',
         'watch'
     ]);
-    grunt.registerTask('build-test', [
+    grunt.registerTask('build', [
+        'clean:dist',
+        'copy:dist',
+        'copy:static',
+        'less',
+        'browserify',
+        'useminPrepare',
+        'uglify',
+        'cssmin',
+        "filerev",
+        "usemin",
         'clean:build',
         'copy:build'
-
+    ]);
+    grunt.registerTask('test', [
+        'clean:dist',
+        'copy:dist',
+        'copy:build'
     ]);
 
-    grunt.registerTask('default', 'static');
+
+    grunt.registerTask('default', 'dev');
 
 };
