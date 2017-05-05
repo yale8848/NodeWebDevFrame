@@ -37,8 +37,8 @@ module.exports = function(grunt) {
         dist: DIR + '/public'
     };
 
-    const mockTestPath = "./deploy/mock/test.json";
-    const mockBuildPath = "./deploy/mock/build.json";
+    const mockTestPath = "./mock/mock.json";
+    const mockBuildPath = "./mock/mock.json";
 
 
     grunt.initConfig({
@@ -99,7 +99,7 @@ module.exports = function(grunt) {
                     // if the source file has an extension of es6 then
                     // we change the name of the source file accordingly.
                     // The result file's extension is always .js
-                    "<%= config.dist %>/js/dxhnews.js": ["<%= config.src %>/js/*.js"]
+                    "<%= config.dist %>/js/main.js": ["<%= config.src %>/js/*.js"]
                 }
             }
         },
@@ -262,13 +262,13 @@ module.exports = function(grunt) {
                 tasks: ['nunjucksMutil:dev']
             },
             nunjucks: {
-                files: ['<%= config.src %>/views/**/*.html', '<%= config.src %>/pages/**/*.html'],
+                files: ['./views/**/*.html', '<%= config.src %>/pages/**/*.html'],
                 tasks: ['nunjucksMutil:static']
             },
-            views: {
-                files: ['<%= config.src %>/views/**/*.html'],
-                tasks: ['copy:views']
-            },
+            // views: {
+            //     files: ['./views/**/*.html'],
+            //     tasks: ['copy:views']
+            // },
             options: {
                 livereload: lrPort
             },
@@ -313,7 +313,7 @@ module.exports = function(grunt) {
                 // 服务器地址(可以使用主机名localhost，也能使用IP)
                 hostname: 'localhost',
                 // 物理路径(默认为. 即根目录) 注：使用'.'或'..'为路径的时，可能会返回403 Forbidden. 此时将该值改为相对路径 如：/grunt/reloard。
-                base: ['<%=config.dist%>'],
+                base: ['./public'],
                 open: true
             },
             livereload: {
@@ -342,9 +342,9 @@ module.exports = function(grunt) {
                 render: {
                     files: [{
                         expand: true,
-                        cwd: "./src/views/",
+                        cwd: "./views/",
                         src: "**/*.html",
-                        dest: "<%=config.dist%>/views/",
+                        dest: "./public/views/",
                         ext: ".html"
                     }, {
                         expand: true,
@@ -386,7 +386,6 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
 
         'clean:dist',
-        'clean:views',
         'copy:dist',
         'copy:static',
         'nunjucksMutil:dev',
@@ -410,6 +409,6 @@ module.exports = function(grunt) {
     ]);
 
 
-    grunt.registerTask('default', 'build');
+    grunt.registerTask('default', 'static');
 
 };

@@ -13,7 +13,6 @@
             <input type="password" name="password" required="required" lay-verify="title" autocomplete="off" placeholder="密码" class="layui-input" />
         </div>
     </div>
-
     <div class="layui-form-item">
         <label class="layui-form-label"></label>
         <div class="layui-input-block">
@@ -29,14 +28,12 @@
 <script type="text/javascript">
     layui.use('form', function() {
         var form = layui.form();
-
         form.on('submit(btn-login)', function(data) {
             var n = $('input[name=userName]').val().trim(),
                 p = $('input[name=password]').val().trim();
             if (n.length > 0 && p.length > 0) {
                 $('.btn-submit').addClass('layui-btn-disabled');
             }
-
             return true;
         });
     });

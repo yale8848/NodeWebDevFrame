@@ -53,14 +53,14 @@ app.all('*', function(req, res, next) {
     }
     let redirect = res.redirect;
     res.redirect = function(path) {
-        redirect.call(this, config.getContextPath() + path);
-    }
-    if (req.originalUrl != config.getContextPath() + '/' &&
-        req.originalUrl != config.getContextPath() + '/user/login' &&
-        !req.session.login) {
-        res.redirect('/');
-        return;
-    }
+            redirect.call(this, config.getContextPath() + path);
+        }
+        // if (req.originalUrl != config.getContextPath() + '/' &&
+        //     req.originalUrl != config.getContextPath() + '/user/login' &&
+        //     !req.session.login) {
+        //     res.redirect('/');
+        //     return;
+        // }
     next();
 });
 

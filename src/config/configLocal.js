@@ -1,5 +1,5 @@
 module.exports = {
-    contextPath: "/DXHQuestServer",
+    contextPath: "",
     db: {
         dbName: "",
         user: "",
