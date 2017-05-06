@@ -1,1 +1,0 @@
-sequelize-auto -o "./models" -d db_name -h www.xxx.com -u uname -p 3306 -x password -e mysql

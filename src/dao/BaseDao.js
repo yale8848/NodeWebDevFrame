@@ -1,5 +1,5 @@
 let log = require('../utils/Log');
-module.exports = class UserDao {
+module.exports = class BaseDao {
     constructor(dao) {
         this.dao = dao;
 

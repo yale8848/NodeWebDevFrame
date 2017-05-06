@@ -459,12 +459,6 @@ module.exports = function(grunt) {
         'copy:deploy'
 
     ]);
-    grunt.registerTask('test', [
-        'copy:views',
-
-    ]);
-
-
-    grunt.registerTask('default', 'build');
+    grunt.registerTask('default', 'dev');
 
 };
