@@ -1,0 +1,16 @@
+{
+    "apps": [{
+        "name": "DXHQuestServer",
+        "script": "./bin/www",
+        "cwd": "/home/server/DXHQuestServer/",
+        "env": { "NODE_ENV": "test", "PORT": "1738" },
+        "watch": "false",
+        "max_memory_restart": "1024M",
+        "instances": 2,
+        "exec_mode": "cluster",
+        "ignoreWatch": ["./node_modules", "./pm2"],
+        "error_file": "/home/server/logs/DXHQuestServer/app/app-err.log",
+        "out_file": "/home/server/logs/DXHQuestServer/app/app-out.log",
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
+    }]
+}

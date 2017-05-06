@@ -1,10 +1,9 @@
 #!/bin/sh
 
-MODE="test"
+MODE="prod"
 APP="DXHQuestServer"
 APP_NAME="DXHQuestServer"
 SERVER_PATH="/home/server"
-
 
 APP_HOME=$SERVER_PATH/$APP_NAME
 PM2_CONFIG=$APP_HOME/deploy/process/$MODE/pm2-start.json

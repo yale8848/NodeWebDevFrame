@@ -1,0 +1,16 @@
+{
+    "apps": [{
+        "name": "DXHQuestServer",
+        "script": "./build/bin/www",
+        "cwd": "./build",
+        "env": { "NODE_ENV": "production", "PORT": "1738" },
+        "watch": "false",
+        "max_memory_restart": "1024M",
+        "exec_mode": "fork",
+        "ignoreWatch": ["./build/node_modules"],
+        "error_file": "",
+        "out_file": "",
+        "log_file": true,
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
+    }]
+}

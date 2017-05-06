@@ -10,7 +10,7 @@ module.exports = function(grunt) {
         appName: "dxhnews",
         appPort: 3256,
         pm2_gui_port: 13256,
-        webContextPath: "dxhnews",
+        webContextPath: "/dxhnews",
 
         replace: {
 
@@ -23,15 +23,15 @@ module.exports = function(grunt) {
                 }]
             },
             webContextPath: {
-                src: ['config/**/*.*', 'deploy/mock/**/*.*', 'pm2-start.json'],
+                src: ['src/config/**/*.*', 'src/Gruntfile.js'],
                 overwrite: true,
                 replacements: [{
-                    from: 'DXHQuestServer',
+                    from: '/DXHQuestServer',
                     to: '<%= webContextPath %>'
                 }]
             },
             port: {
-                src: ['deploy/process/**/*.*', 'bin/www', 'pm2-start.json'],
+                src: ['deploy/process/**/*.*', 'bin/www'],
                 overwrite: true,
                 replacements: [{
                     from: '1738',

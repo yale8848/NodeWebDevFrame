@@ -29,6 +29,7 @@ module.exports = function(grunt) {
     };
 
 
+    var contextPath = "/DXHQuestServer";
 
     const DIR = __dirname; // path.resolve(__dirname, "..");
     var config = {
@@ -62,7 +63,7 @@ module.exports = function(grunt) {
                     expand: true,
                     dot: true,
                     cwd: '<%= config.src %>/static/',
-                    dest: '<%= config.dist %>/',
+                    dest: '<%= config.dist %>/static',
                     src: [
                         '**/*.*'
 
@@ -73,10 +74,32 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= config.src %>/views/',
-                    dest: './views/',
+                    cwd: './views/',
+                    dest: './public/views/',
                     src: [
                         '**/*.*'
+                    ]
+                }]
+            },
+            buildViews: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: './public/views/',
+                    dest: '../build/views/',
+                    src: [
+                        '**/*.*',
+                    ]
+                }]
+            },
+            deploy: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '../deploy/',
+                    dest: '../build/deploy/',
+                    src: [
+                        '**/*.*',
                     ]
                 }]
             },
@@ -87,15 +110,15 @@ module.exports = function(grunt) {
                     cwd: '.',
                     dest: '<%= config.build %>/',
                     src: [
-
                         '**/*.*',
                         '!node_modules/**/*',
                         '!src/**/*',
                         '!mock/**/*',
                         '!Gruntfile.js',
-                        'bin/**/*'
-
-
+                        'bin/**/*',
+                        '!views/**/*',
+                        '!public/views/**/*',
+                        '!gen/**/*'
                     ]
                 }]
             }
@@ -178,8 +201,8 @@ module.exports = function(grunt) {
                 src: [
                     '<%= config.dist %>/js/{,*/}*.js',
                     '<%= config.dist %>/css/{,*/}*.css',
-                    '<%= config.dist %>/img/{,*/}*.*',
-                    '<%= config.dist %>/*.ico',
+                    '<%= config.dist %>/img/{,*/}*.*'
+
                 ]
             }
         },
@@ -187,7 +210,7 @@ module.exports = function(grunt) {
         useminPrepare: {
             html: [
                 '<%= config.src %>/pages/**/*.html',
-                './views/**/*.html'
+                '<%= config.dist %>/views/**/*.html',
             ],
             options: {
                 dest: '<%= config.dist %>',
@@ -212,8 +235,7 @@ module.exports = function(grunt) {
 
             },
             html: [
-                '<%= config.dist %>/**/*.html',
-                './views/**/*.html'
+                '<%= config.dist %>/**/*.html'
             ],
 
             js: '<%= config.dist %>/js/*.js',
@@ -315,7 +337,7 @@ module.exports = function(grunt) {
                 options: {
                     force: true
                 },
-                src: ['<%= config.build %>/**/*']
+                src: ['<%= config.build %>/*', '!<%= config.build %>/node_modules/**']
             }
         },
         // 通过connect任务，创建一个静态服务器
@@ -337,15 +359,50 @@ module.exports = function(grunt) {
             }
         },
         replace: {
-            path: {
-                src: ['<%= config.dist %>/pages/*.html'],
+            build: {
+                src: ['../build/public/pages/**/*.html', '../build/views/**/*.*', '../build/public/css/*.*'],
                 overwrite: true,
                 //dest: '<%= config.dist %>/pages/*.html',
                 replacements: [{
-                    pattern: '<img src="',
-                    replacement: '<img src="\<\\%\= CCCC \%\>'
+                        from: /\shref="\/css\//g,
+                        to: ' href="' + contextPath + '/css/'
+                    },
+                    {
+                        from: /\ssrc="\/js\//g,
+                        to: ' src="' + contextPath + '/js/'
+                    },
+                    {
+                        from: /\ssrc="\/img\//g,
+                        to: ' src="' + contextPath + '/img/'
+                    },
+                    {
+                        from: /\shref="\/img\//g,
+                        to: ' href="' + contextPath + '/img/'
+                    },
+                    {
+                        from: /\ssrc="\/static\//g,
+                        to: ' src="' + contextPath + '/static/'
+                    },
+                    {
+                        from: /url\(\/img/g,
+                        to: 'url\(' + contextPath + '/img'
+                    },
+                    {
+                        from: /url\("\/img/g,
+                        to: 'url\("' + contextPath + '/img'
+                    }
+                ]
+            },
+            buildPages: {
+                src: ['../build/public/pages/**/*.html'],
+                overwrite: true,
+                //dest: '<%= config.dist %>/pages/*.html',
+                replacements: [{
+                    from: /{{contextPath}}/g,
+                    to: contextPath
                 }]
             }
+
         },
         nunjucksMutil: {
             dev: {
@@ -386,6 +443,7 @@ module.exports = function(grunt) {
         'clean:dist',
         'copy:dist',
         'copy:static',
+        'copy:views',
         'less',
         'browserify',
         'useminPrepare',
@@ -394,15 +452,19 @@ module.exports = function(grunt) {
         "filerev",
         "usemin",
         'clean:build',
-        'copy:build'
+        'copy:build',
+        'copy:buildViews',
+        'replace:build',
+        'replace:buildPages',
+        'copy:deploy'
+
     ]);
     grunt.registerTask('test', [
-        'clean:dist',
-        'copy:dist',
-        'copy:build'
+        'copy:views',
+
     ]);
 
 
-    grunt.registerTask('default', 'dev');
+    grunt.registerTask('default', 'build');
 
 };
