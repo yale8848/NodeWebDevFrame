@@ -1,28 +1,28 @@
 # NodeWebDevFrame
-Node Web Dev,Test,Monitor,Deploy
+Node Web Dev,Deploy
 
 [![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
 
 
 ## 简介
 
-本工程是node web 工程开发框架，其包括node app开发，测试，监控，以及部署方案；
+本工程是node web 工程开发框架，其包括开发，测试，以及部署方案；
 
-`config`目录是web app 调用的配置文件，`deploy`目录是部署配置
+web 框架用[Express](https://github.com/expressjs/express),[PM2](https://github.com/Unitech/pm2)进程管理，日志切割用 [pm2-logrotate](https://github.com/pm2-hive/pm2-logrotate) ，模板引擎用[nunjucks](https://github.com/mozilla/nunjucks)，数据库ORM用[sequelize](https://github.com/sequelize/sequelize)，数据库是MySql
 
-#### 开发
+#### 目录结构
 
-  默认是用Express web
+  ![目录结构](https://github.com/yale8848/NodeWebDevFrame/blob/master/snapshot/dir.png?raw=true)
 
-#### 测试
+### 开发前依赖库安装
 
-  用npm启动脚本，PM2进行进程管理
-#### 部署
+1. npm install
+2. npm install pm2 -g
+3. npm install grunt-cli -g
+4. npm install sequelize-auto -g
+5. cd src & npm install
 
-  通过grunt ssh 进行服务器初始化和部署
-
-
-### 修改项目名称等配置
+### 首次运行修改项目名称等配置
 
 默认项目名称为DXHQuestServer，需要修改项目名称，端口等信息
 
@@ -36,52 +36,54 @@ Node Web Dev,Test,Monitor,Deploy
 2. grunt --gruntfile Gruntfile-replace.js  注意修改完后如果deploy/shell/目录下的sh文件换行符为CRLF的话，请转化为linux下的LF
 
 3. 注意deploy/process/test/pm2-start.json,deploy/process/prod/pm2-start.json 中的
-`NODE_ENV`变量和config/config.js文件中的`process.env.NODE_ENV` 变量一致
+`NODE_ENV`变量和src/config/config.js文件中的`process.env.NODE_ENV` 变量一致
 
 
-### 初次安装
+### 初次安装服务器软件环境
 
 默认服务器为linux服务器，所有的账户为root账户，服务器部署为测试服务器和正式服务器，测试名称为test,正式服务器名为prod
 
 1. npm i
 
-2. 修改deploy/grunt/secret_install.json 服务器信息
+2. 修改deploy/secret/secret.json 服务器信息
 
 3. 测试服务安装node依赖，添加node环境变量，添加开机自启； `grunt install_test --gruntfile Gruntfile-install.js `
- 修改deploy/grunt/secret_install.json中的intstall_test 等信息
+ 修改deploy/secret/secret.json中的intstall_test 等信息
 
 4. 正式服务器安装node依赖，添加node环境变量，添加开机自启；`grunt install_prod --gruntfile Gruntfile-install.js `
-   正式服务器有多个的话，先在 deploy/grunt/secret_install.json中修改intstall_prod 的hosts数组添加host，然后在Gruntfile-install.js 中 environments  task中添加 install_prod0，install_prod1 等等，同时修改install_prod0，install_prod1 中的hosts[0],hosts[1]
+   正式服务器有多个的话，先在 deploy/secret/secret.json中修改intstall_prod 的hosts数组添加host，然后在Gruntfile-install.js 中 environments  task中添加 install_prod0，install_prod1 等等，同时修改install_prod0，install_prod1 中的hosts[0],hosts[1]
 
-### 本地开发测试
-1. npm install
-2. npm install pm2 -g
-3. npm install grunt-cli -g
-4. npm install sequelize-auto -g
 
-如果使用数据库，先用执行 ` deploy/db/seq-auto.bat ` 生成models
 
-npm start
+### 本地前端开发
+1. cd src
+2. 修改mock/mock.json 数据模拟后台数
+3. grunt dev 测试
 
-pm2 monit
+### 后台开发
 
-需要修改pm2-start.json 相关信息，默认开启watch
+####
+如果使用数据库，先用执行 ` deploy/db/seq-auto.bat ` 生成src/models;修改src/gen/RouterGen.js,./src/gen/RouterGen.js,`node src/gen/RouterGen.js`，`node src/gen/RouterGen.js`生成Router、Dao、ServiceDaoGen;
 
-1.静态页面开发，`grunt static ` 自动监听模板以及所有静态文件，实时刷新页面，模板的数据放在deploy/mock/test.json
+1. cd src
+2. npm start 测试
 
-2.后台开发，`grunt dev ` 自动监听模板以及所有静态文件，实时刷新页面，模板的contextPath数据放在deploy/mock/build.json 目的是为静态html页面路径提供静态路径
+### 编译
 
-3.最终build, `gurnt build` 生成最终用于生成环境用的代码
+1. cd src
+2. grunt build
+3. cd ..
+4. npm start 测试
 
 ### 测试服务器部署
 
-1. 修改deploy/grunt/secret.json test 字段相关信息,修改方法和初次安装中一样；
-2. grunt test --gruntfile Gruntfile-deploy.js
+1. 修改deploy/secret/secret.json test 字段相关信息,修改方法和初次安装中一样；
+2. ./deploy.bat test
 
 ### 正式服务器部署
 
-1. 修改deploy/grunt/secret.json prod 字段相关信息,修改方法和初次安装中一样，注意添加host同时要修改Gruntfile.js中的environments task，添加prod0，prod1 等等
-2. grunt prod --gruntfile Gruntfile-deploy.js
+1. 修改deploy/secret/secret.json prod 字段相关信息,修改方法和初次安装中一样，注意添加host同时要修改Gruntfile.js中的environments task，添加prod0，prod1 等等
+2. ./deploy.bat prod
 
 
 ### 部署流程
@@ -98,7 +100,6 @@ pm2 monit
 
 ### 部署说明
 
-此工程用[PM2](https://github.com/Unitech/pm2)进程管理，日志切割用 [pm2-logrotate](https://github.com/pm2-hive/pm2-logrotate) ，服务器监控用 [pm2-gui](https://github.com/Tjatse/pm2-gui)
 
 1. 安装install.sh 会放入/home/server/install/
 2. 初次安装会安装node-7.6.0,下载目录/home/server/soft,安装路劲/usr/local/node-xxxxx
