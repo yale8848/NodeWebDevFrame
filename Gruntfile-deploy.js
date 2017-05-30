@@ -196,10 +196,8 @@ module.exports = function(grunt) {
     grunt.registerTask('prod', [
         'compress:main',
         'ssh_deploy:prod0',
-        'ssh_deploy:prod1',
         'async_ssh_exec:prod',
-        'clean',
-        'simple_rest'
+        'clean'
     ]);
     grunt.registerTask('default', 'test');
 

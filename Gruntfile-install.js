@@ -115,7 +115,6 @@ module.exports = function(grunt) {
     grunt.registerTask('install_prod', [
         'async_ssh_exec:install_prod',
         'ssh_deploy:install_prod0',
-        'ssh_deploy:install_prod1',
         'async_ssh_exec:install_prod_start'
     ]);
 
