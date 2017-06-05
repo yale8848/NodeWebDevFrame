@@ -29,6 +29,7 @@ module.exports = function(grunt) {
     };
 
 
+    var contextPath = "/DXHQuestServer";
 
     const DIR = __dirname; // path.resolve(__dirname, "..");
     var config = {
@@ -38,9 +39,7 @@ module.exports = function(grunt) {
         build: path.resolve(__dirname, "..") + "/build"
     };
 
-    const mockTestPath = "./mock/mock.json";
-    const mockBuildPath = "./mock/mock.json";
-
+    const mockPath = "./mock/mock.json";
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -53,9 +52,6 @@ module.exports = function(grunt) {
                     cwd: '<%= config.src %>/',
                     dest: '<%= config.dist %>/',
                     src: [
-                        //  '**/*.html',
-                        //  '!node_modules/**/*.html',
-                        //   '!static/**/*.html',
                         'pages/**/*.html',
                         'img/{,*/}*.*',
                         '*.ico'
@@ -67,7 +63,7 @@ module.exports = function(grunt) {
                     expand: true,
                     dot: true,
                     cwd: '<%= config.src %>/static/',
-                    dest: '<%= config.dist %>/',
+                    dest: '<%= config.dist %>/static',
                     src: [
                         '**/*.*'
 
@@ -78,10 +74,32 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     dot: true,
-                    cwd: '<%= config.src %>/views/',
-                    dest: './views/',
+                    cwd: './views/',
+                    dest: './public/views/',
                     src: [
                         '**/*.*'
+                    ]
+                }]
+            },
+            buildViews: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: './public/views/',
+                    dest: '../build/views/',
+                    src: [
+                        '**/*.*',
+                    ]
+                }]
+            },
+            deploy: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '../deploy/',
+                    dest: '../build/deploy/',
+                    src: [
+                        '**/*.*',
                     ]
                 }]
             },
@@ -94,7 +112,13 @@ module.exports = function(grunt) {
                     src: [
                         '**/*.*',
                         '!node_modules/**/*',
-                        '!src/**/*'
+                        '!src/**/*',
+                        '!mock/**/*',
+                        '!Gruntfile.js',
+                        'bin/**/*',
+                        '!views/**/*',
+                        '!public/views/**/*',
+                        '!gen/**/*'
                     ]
                 }]
             }
@@ -128,7 +152,7 @@ module.exports = function(grunt) {
         uglify: {
             target: {
                 files: {
-                    '<%= config.dist %>/js/dxhnews.js': ['<%= config.dist %>/js/dxhnews.js']
+                    '<%= config.dist %>/js/main.js': ['<%= config.dist %>/js/main.js']
                 }
             }
         },
@@ -177,15 +201,16 @@ module.exports = function(grunt) {
                 src: [
                     '<%= config.dist %>/js/{,*/}*.js',
                     '<%= config.dist %>/css/{,*/}*.css',
-                    '<%= config.dist %>/img/{,*/}*.*',
-                    '<%= config.dist %>/*.ico',
+                    '<%= config.dist %>/img/{,*/}*.*'
+
                 ]
             }
         },
 
         useminPrepare: {
             html: [
-                '<%= config.src %>/**/*.html',
+                '<%= config.src %>/pages/**/*.html',
+                '<%= config.dist %>/views/**/*.html',
             ],
             options: {
                 dest: '<%= config.dist %>',
@@ -197,8 +222,7 @@ module.exports = function(grunt) {
             options: {
                 assetsDirs: [
                     '<%= config.dist %>',
-                    '<%= config.dist %>/img',
-
+                    '<%= config.dist %>/img'
                 ],
                 patterns: {
                     css: [
@@ -211,7 +235,7 @@ module.exports = function(grunt) {
 
             },
             html: [
-                '<%= config.dist %>/**/*.html',
+                '<%= config.dist %>/**/*.html'
             ],
 
             js: '<%= config.dist %>/js/*.js',
@@ -268,17 +292,13 @@ module.exports = function(grunt) {
 
                 tasks: ['browserify'],
             },
-            mock: {
-                files: [mockTestPath],
-                tasks: ['nunjucksMutil:static']
-            },
             dev: {
-                files: [mockBuildPath],
+                files: [mockPath],
                 tasks: ['nunjucksMutil:dev']
             },
             nunjucks: {
                 files: ['./views/**/*.html', '<%= config.src %>/pages/**/*.html'],
-                tasks: ['nunjucksMutil:static']
+                tasks: ['nunjucksMutil:dev']
             },
             // views: {
             //     files: ['./views/**/*.html'],
@@ -313,17 +333,11 @@ module.exports = function(grunt) {
                 },
                 src: ['<%= config.dist %>/**/*', '<%= config.tmp %>/**/*']
             },
-            views: {
-                options: {
-                    force: true
-                },
-                src: ['./views/**/*']
-            },
             build: {
                 options: {
                     force: true
                 },
-                src: ['<%= config.dist %>/**/*']
+                src: ['<%= config.build %>/*', '!<%= config.build %>/node_modules/**']
             }
         },
         // 通过connect任务，创建一个静态服务器
@@ -345,20 +359,55 @@ module.exports = function(grunt) {
             }
         },
         replace: {
-            path: {
-                src: ['<%= config.dist %>/pages/*.html'],
+            build: {
+                src: ['../build/public/pages/**/*.html', '../build/views/**/*.*', '../build/public/css/*.*'],
                 overwrite: true,
                 //dest: '<%= config.dist %>/pages/*.html',
                 replacements: [{
-                    pattern: '<img src="',
-                    replacement: '<img src="\<\\%\= CCCC \%\>'
+                        from: /\shref="\/css\//g,
+                        to: ' href="' + contextPath + '/css/'
+                    },
+                    {
+                        from: /\ssrc="\/js\//g,
+                        to: ' src="' + contextPath + '/js/'
+                    },
+                    {
+                        from: /\ssrc="\/img\//g,
+                        to: ' src="' + contextPath + '/img/'
+                    },
+                    {
+                        from: /\shref="\/img\//g,
+                        to: ' href="' + contextPath + '/img/'
+                    },
+                    {
+                        from: /\ssrc="\/static\//g,
+                        to: ' src="' + contextPath + '/static/'
+                    },
+                    {
+                        from: /url\(\/img/g,
+                        to: 'url\(' + contextPath + '/img'
+                    },
+                    {
+                        from: /url\("\/img/g,
+                        to: 'url\("' + contextPath + '/img'
+                    }
+                ]
+            },
+            buildPages: {
+                src: ['../build/public/pages/**/*.html'],
+                overwrite: true,
+                //dest: '<%= config.dist %>/pages/*.html',
+                replacements: [{
+                    from: /{{contextPath}}/g,
+                    to: contextPath
                 }]
             }
+
         },
         nunjucksMutil: {
-            static: {
+            dev: {
                 options: {
-                    data: grunt.file.readJSON(mockTestPath)
+                    data: grunt.file.readJSON(mockPath)
                 },
                 render: {
                     files: [{
@@ -375,44 +424,22 @@ module.exports = function(grunt) {
                         ext: ".html"
                     }]
                 }
-            },
-            dev: {
-                options: {
-                    data: grunt.file.readJSON(mockBuildPath)
-                },
-                render: {
-                    files: [{
-                        expand: true,
-                        cwd: "./src/pages/",
-                        src: "**/*.html",
-                        dest: "./public/pages/",
-                        ext: ".html"
-                    }]
-                },
             }
         }
 
     });
 
-    grunt.registerTask('static', [
+    grunt.registerTask('dev', [
         'clean:dist',
         'copy:dist',
         'copy:static',
         'less',
         'browserify',
-        'nunjucksMutil:static',
+        'nunjucksMutil:dev',
         'connect',
         'watch'
     ]);
     grunt.registerTask('build', [
-
-        'clean:dist',
-        'copy:dist',
-        'copy:static',
-        'less',
-        'browserify',
-
-
         'clean:dist',
         'copy:dist',
         'copy:static',
@@ -421,22 +448,17 @@ module.exports = function(grunt) {
         'browserify',
         'useminPrepare',
         'uglify',
-        'cssmin'
-    ]);
-    grunt.registerTask('dev', [
-        'clean:dist',
-        'copy:dist',
-        'copy:static',
-        'less',
-        'browserify',
-        'watch'
-    ]);
-    grunt.registerTask('build-test', [
+        'cssmin',
+        "filerev",
+        "usemin",
         'clean:build',
-        'copy:build'
+        'copy:build',
+        'copy:buildViews',
+        'replace:build',
+        'replace:buildPages',
+        'copy:deploy'
 
     ]);
-
-    grunt.registerTask('default', 'static');
+    grunt.registerTask('default', 'dev');
 
 };

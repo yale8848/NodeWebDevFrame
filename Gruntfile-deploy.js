@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        secret: grunt.file.readJSON('./deploy/grunt/secret.json'),
+        secret: grunt.file.readJSON('./deploy/secret/secret.json'),
         compress: {
             main: {
                 options: {
@@ -23,8 +23,8 @@ module.exports = function(grunt) {
                 },
                 files: [{
                     expand: true,
-                    cwd: './',
-                    src: ['./**/*'],
+                    cwd: './build/',
+                    src: ['**/*'],
                     dest: './',
                     filter: function(filepath) {
 
@@ -94,6 +94,30 @@ module.exports = function(grunt) {
                     { exe: "bash " + remtoePath + "/deploy/shell/" + TEST + "/start.sh", silent: false, interrupt: false }
                 ]
             },
+            test_start: {
+                async: false,
+                server: {
+                    host: ["<%= secret.test.host %>"],
+                    port: '<%= secret.test.port %>',
+                    username: '<%= secret.test.username %>',
+                    password: '<%= secret.test.password %>'
+                },
+                exeCommands: [
+                    { exe: "bash " + remtoePath + "/deploy/shell/" + TEST + "/start.sh", silent: false, interrupt: false }
+                ]
+            },
+            test_stop: {
+                async: false,
+                server: {
+                    host: ["<%= secret.test.host %>"],
+                    port: '<%= secret.test.port %>',
+                    username: '<%= secret.test.username %>',
+                    password: '<%= secret.test.password %>'
+                },
+                exeCommands: [
+                    { exe: "bash " + remtoePath + "/deploy/shell/" + TEST + "/stop.sh", silent: false, interrupt: false }
+                ]
+            },
             prod: {
                 async: false,
                 server: {
@@ -111,6 +135,30 @@ module.exports = function(grunt) {
                     { exe: "bash " + remtoePath + "/deploy/shell/" + PROD + "/start.sh", silent: false, interrupt: false }
                 ]
             },
+            prod_start: {
+                async: false,
+                server: {
+                    host: "<%= secret.prod.hosts %>",
+                    port: '<%= secret.prod.port %>',
+                    username: '<%= secret.prod.username %>',
+                    password: '<%= secret.prod.password %>'
+                },
+                exeCommands: [
+                    { exe: "bash " + remtoePath + "/deploy/shell/" + PROD + "/start.sh", silent: false, interrupt: false }
+                ]
+            },
+            prod_stop: {
+                async: false,
+                server: {
+                    host: "<%= secret.prod.hosts %>",
+                    port: '<%= secret.prod.port %>',
+                    username: '<%= secret.prod.username %>',
+                    password: '<%= secret.prod.password %>'
+                },
+                exeCommands: [
+                    { exe: "bash " + remtoePath + "/deploy/shell/" + PROD + "/stop.sh", silent: false, interrupt: false }
+                ]
+            }
         },
         simple_rest: {
             verify: {
@@ -131,16 +179,25 @@ module.exports = function(grunt) {
         'compress:main',
         'ssh_deploy:test',
         'async_ssh_exec:test',
-        'clean',
-        'simple_rest'
+        'clean'
+    ]);
+    grunt.registerTask('test_start', [
+        'async_ssh_exec:test_start'
+    ]);
+    grunt.registerTask('test_stop', [
+        'async_ssh_exec:test_stop'
+    ]);
+    grunt.registerTask('prod_start', [
+        'async_ssh_exec:prod_start'
+    ]);
+    grunt.registerTask('prod_stop', [
+        'async_ssh_exec:prod_stop'
     ]);
     grunt.registerTask('prod', [
         'compress:main',
         'ssh_deploy:prod0',
-        'ssh_deploy:prod1',
         'async_ssh_exec:prod',
-        'clean',
-        'simple_rest'
+        'clean'
     ]);
     grunt.registerTask('default', 'test');
 

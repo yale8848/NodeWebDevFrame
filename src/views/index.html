@@ -1,5 +1,6 @@
 {%extends './layout.html'%} {% block content %}
-
+<div class="test-bg">
+</div>
 <form class="index-layui-form" action="{{contextPath}}/user/login" method="POST">
     <div class="layui-form-item">
         <label class="layui-form-label">用户名：</label>
@@ -22,9 +23,10 @@
     </div>
 </form>
 <div class="error-hint">
-    {{user.message}}
+    {{index.message}}
 </div>
 {% endblock %} {% block script %}
+<script type="text/javascript" src="/static/static.js"></script>
 <script type="text/javascript">
     layui.use('form', function() {
         var form = layui.form();

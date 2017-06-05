@@ -12,14 +12,14 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        secret: grunt.file.readJSON('./deploy/grunt/secret_install.json'),
+        secret: grunt.file.readJSON('./deploy/secret/secret.json'),
         environments: {
-            intstall_test: {
+            test: {
                 options: {
-                    host: '<%= secret.intstall_test.host %>',
-                    username: '<%= secret.intstall_test.username %>',
-                    password: '<%= secret.intstall_test.password %>',
-                    port: '<%= secret.intstall_test.port %>',
+                    host: '<%= secret.test.host %>',
+                    username: '<%= secret.test.username %>',
+                    password: '<%= secret.test.password %>',
+                    port: '<%= secret.test.port %>',
                     debug: true,
                     local_path: './deploy/shell/' + TEST + '/' + INSTALL_SHELL_NAME,
                     deploy_path: INSTALL_PATH,
@@ -29,10 +29,10 @@ module.exports = function(grunt) {
             },
             install_prod0: {
                 options: {
-                    host: '<%= secret.intstall_prod.hosts[0] %>',
-                    username: '<%= secret.intstall_prod.username %>',
-                    password: '<%= secret.intstall_prod.password %>',
-                    port: '<%= secret.intstall_prod.port %>',
+                    host: '<%= secret.prod.hosts[0] %>',
+                    username: '<%= secret.prod.username %>',
+                    password: '<%= secret.prod.password %>',
+                    port: '<%= secret.prod.port %>',
                     debug: true,
                     local_path: './deploy/shell/' + PROD + '/' + INSTALL_SHELL_NAME,
                     deploy_path: INSTALL_PATH,
@@ -42,10 +42,10 @@ module.exports = function(grunt) {
             },
             install_prod1: {
                 options: {
-                    host: '<%= secret.intstall_prod.hosts[1] %>',
-                    username: '<%= secret.intstall_prod.username %>',
-                    password: '<%= secret.intstall_prod.password %>',
-                    port: '<%= secret.intstall_prod.port %>',
+                    host: '<%= secret.prod.hosts[1] %>',
+                    username: '<%= secret.prod.username %>',
+                    password: '<%= secret.prod.password %>',
+                    port: '<%= secret.prod.port %>',
                     debug: true,
                     local_path: './deploy/shell/' + PROD + '/' + INSTALL_SHELL_NAME,
                     deploy_path: INSTALL_PATH,
@@ -59,10 +59,10 @@ module.exports = function(grunt) {
             install_test: {
                 async: false,
                 server: {
-                    host: ["<%= secret.intstall_test.host %>"],
-                    port: '<%= secret.intstall_test.port %>',
-                    username: '<%= secret.intstall_test.username %>',
-                    password: '<%= secret.intstall_test.password %>'
+                    host: ["<%= secret.test.host %>"],
+                    port: '<%= secret.test.port %>',
+                    username: '<%= secret.test.username %>',
+                    password: '<%= secret.test.password %>'
                 },
                 exeCommands: [
                     { exe: "mkdir -p " + INSTALL_PATH }
@@ -71,10 +71,10 @@ module.exports = function(grunt) {
             install_test_start: {
                 async: false,
                 server: {
-                    host: ["<%= secret.intstall_test.host %>"],
-                    port: '<%= secret.intstall_test.port %>',
-                    username: '<%= secret.intstall_test.username %>',
-                    password: '<%= secret.intstall_test.password %>'
+                    host: ["<%= secret.test.host %>"],
+                    port: '<%= secret.test.port %>',
+                    username: '<%= secret.test.username %>',
+                    password: '<%= secret.test.password %>'
                 },
                 exeCommands: [
                     { exe: "cd " + INSTALL_PATH + " && cd " + version + " && chmod 777 " + INSTALL_SHELL_NAME + " && bash -x " + INSTALL_SHELL_NAME }
@@ -83,10 +83,10 @@ module.exports = function(grunt) {
             install_prod: {
                 async: false,
                 server: {
-                    host: "<%= secret.intstall_prod.hosts %>",
-                    port: '<%= secret.intstall_prod.port %>',
-                    username: '<%= secret.intstall_prod.username %>',
-                    password: '<%= secret.intstall_prod.password %>'
+                    host: "<%= secret.prod.hosts %>",
+                    port: '<%= secret.prod.port %>',
+                    username: '<%= secret.prod.username %>',
+                    password: '<%= secret.prod.password %>'
                 },
                 exeCommands: [
                     { exe: "mkdir -p " + INSTALL_PATH }
@@ -95,10 +95,10 @@ module.exports = function(grunt) {
             install_prod_start: {
                 async: false,
                 server: {
-                    host: "<%= secret.intstall_prod.hosts %>",
-                    port: '<%= secret.intstall_prod.port %>',
-                    username: '<%= secret.intstall_prod.username %>',
-                    password: '<%= secret.intstall_prod.password %>'
+                    host: "<%= secret.prod.hosts %>",
+                    port: '<%= secret.prod.port %>',
+                    username: '<%= secret.prod.username %>',
+                    password: '<%= secret.prod.password %>'
                 },
                 exeCommands: [
                     { exe: "cd " + INSTALL_PATH + " && cd " + version + " && chmod 777 " + INSTALL_SHELL_NAME + " && bash -x " + INSTALL_SHELL_NAME }
@@ -109,13 +109,12 @@ module.exports = function(grunt) {
 
     grunt.registerTask('install_test', [
         'async_ssh_exec:install_test',
-        'ssh_deploy:intstall_test',
+        'ssh_deploy:test',
         'async_ssh_exec:install_test_start'
     ]);
     grunt.registerTask('install_prod', [
         'async_ssh_exec:install_prod',
         'ssh_deploy:install_prod0',
-        'ssh_deploy:install_prod1',
         'async_ssh_exec:install_prod_start'
     ]);
 

@@ -8,22 +8,22 @@ module.exports = class TPLDAO extends BaseDao {
         super(DB);
     }
 
-    findAll() {
-        return super.findAll({
+    find() {
+        return super.find({
             order: [
                 ['{{id}}', 'DESC']
             ]
         });
     };
     delete(id) {
-        return super.delete({
+        return super.deleteWhere({
             '{{id}}': id
         });
     }
     get(id) {
-        return super.get({ '{{id}}': id });
+        return super.findWhere({ '{{id}}': id });
     }
     update(data, id) {
-        return super.update(data, { '{{id}}': id });
+        return super.updateWhere(data, { '{{id}}': id });
     }
 }

@@ -19,8 +19,8 @@ echo "node modules installed"
 
 pm2 stop $APP
 pm2 start $PM2_CONFIG
-pm2-gui stop
-pm2-gui start $PM2_GUI_CONFIG
+#pm2-gui stop
+#pm2-gui start $PM2_GUI_CONFIG
 
 pm2 set pm2-logrotate:max_size 100K
 pm2 set pm2-logrotate:rotateInterval '0 0 * * *'
