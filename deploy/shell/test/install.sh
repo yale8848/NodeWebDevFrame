@@ -55,10 +55,10 @@ source /etc/profile
 
 
 installDepend () {
-npm install -g cnpm --registry=https://registry.npm.taobao.org 
-cnpm i pm2 -g 
+# npm install -g cnpm --registry=https://registry.npm.taobao.org 
+npm i pm2 -g 
 pm2 install pm2-logrotate 
-cnpm install pm2-gui -g 
+npm install pm2-gui -g 
 }
 
 

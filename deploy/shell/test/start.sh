@@ -14,7 +14,7 @@ NODE_HOME=/usr/local/node-v7.6.0-linux-x64
 export PATH=$PATH:$NODE_HOME/bin
 
 echo "node modules installing..."
-cd $APP_HOME && cnpm i --production
+cd $APP_HOME && npm i --production
 echo "node modules installed"
 
 pm2 stop $APP
